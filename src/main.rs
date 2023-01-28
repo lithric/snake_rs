@@ -1,12 +1,3 @@
-/******************************************************************************
-
-                            Online Rust Compiler.
-                Code, Compile, Run and Debug Rust program online.
-Write your code in this editor and press "Run" button to execute it.
-
-*******************************************************************************/
-
-
 /*
     goal:
         make a console game with console pixels and stuff.
@@ -20,6 +11,17 @@ Write your code in this editor and press "Run" button to execute it.
         certaint types of values.
 */
 
+pub mod color;
+pub mod ansii_chunk;
+pub mod size;
+pub mod pos;
+pub mod ansii_string;
+
+use crate::color::Color;
+use crate::ansii_chunk::AnsiiChunk;
+use crate::ansii_string::AnsiiString;
+use crate::size::Size;
+use crate::pos::Pos;
 use device_query::{DeviceQuery, DeviceState, Keycode};
 use std::cmp::{min,max};
 
@@ -28,209 +30,14 @@ use std::cmp::{min,max};
     [**color**][**pixels**]
 */
 
-struct AnsiiColorChunk(usize,RGB);
 
 
-enum AnsiiChunk {
-    Text(String,RGB,RGB),
-    Void(usize,RGB)
-}
-
-impl AnsiiChunk {
-    fn len(&self) -> usize {
-        match self {
-            AnsiiChunk::Text => {
-                self
-            }
-        }
-    }
-    fn rgb(&self) -> RGB {}
-}
-
-struct RenderMachineCode(String);
-
-impl std::fmt::Display for RenderMachineCode {
-    fn fmt(&self, out: &mut std::fmt::Formatter) -> std::fmt::Result {
-        // code: [(width,height),(color,length),(color,length),(end,length),(color,length)]
-        write!(out, "{}", format!("\x1b[48;2;{red};{green};{blue}m"))
-    }
-}
-
-
-#[derive(Debug, Copy, Clone)]
-struct Size {
-    width: usize,
-    height: usize
-}
-
-impl std::cmp::Ord for Size {
-    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
-        (self.width * self.height).cmp(&(other.width * other.height))
-    }
-}
-
-impl std::cmp::PartialOrd for Size {
-    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
-        Some(self.cmp(other))
-    }
-}
-
-impl std::cmp::PartialEq for Size {
-    fn eq(&self, other: &Self) -> bool {
-        self.width * self.height == other.width * other.height
-    }
-}
-
-impl std::cmp::PartialOrd<XYZ> for Size {
-    fn partial_cmp(&self, other: &XYZ) -> Option<std::cmp::Ordering> {
-        Some((self.width as i32, self.height as i32).cmp(&(other.x, other.y)))
-    }
-}
-
-impl std::cmp::PartialEq<XYZ> for Size {
-    fn eq(&self, other: &XYZ) -> bool {
-        ( self.width as i32, self.height as i32 ) == ( other.x, other.y )
-    }
-}
-
-impl std::cmp::Eq for Size {}
-
-#[derive(Debug, Copy, Clone)]
-struct XY {
-    x: i32,
-    y: i32
-}
-
-#[derive(Debug, Copy, Clone)]
-struct XYZ {
-    x: i32,
-    y: i32,
-    z: i32
-}
-
-impl XYZ {
-    fn index(&self, subject: &Size) -> Option<usize> {
-        let index = self.x + ( self.y * (subject.width as i32) );
-        if index < 0 {
-            None
-        }
-        else {
-            Some(index as usize)
-        }
-    }
-}
-
-impl std::cmp::Ord for XYZ {
-    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
-        (self.x, self.y).cmp(&(other.x, other.y))
-    }
-}
-
-impl std::cmp::PartialOrd for XYZ {
-    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
-        Some(self.cmp(other))
-    }
-}
-
-impl std::cmp::PartialEq for XYZ {
-    fn eq(&self, other: &Self) -> bool {
-        (self.x, self.y) == (other.x , other.y)
-    }
-}
-
-impl std::cmp::PartialOrd<Size> for XYZ {
-    fn partial_cmp(&self, other: &Size) -> Option<std::cmp::Ordering> {
-        Some((self.x, self.y).cmp(&(other.width as i32, other.height as i32)))
-    }
-}
-
-impl std::cmp::PartialEq<Size> for XYZ {
-    fn eq(&self, other: &Size) -> bool {
-        (self.x, self.y) == (other.width as i32, other.height as i32)
-    }
-}
-
-impl std::cmp::Eq for XYZ {}
-
-impl std::ops::Add for XYZ {
-    type Output = Self;
-    
-    fn add(self, other: Self) -> Self {
-        Self {
-            x: self.x + other.x,
-            y: self.y + other.y,
-            z: self.z + other.z
-        }
-    }
-}
-
-impl std::ops::Add<Size> for XYZ {
-    type Output = Self;
-
-    fn add(self, other: Size) -> Self {
-        Self {
-            x: self.x + (other.width as i32),
-            y: self.y + (other.height as i32),
-            z: self.z
-        }
-    }
-}
 
 // impl std::cmp::Ord<Size> for XYZ {
 //     fn cmp(&self, other: &Size) -> std::cmp::Ordering {
 //         (self.x, self.y).cmp((other.width as i32, other.height as i32))
 //     }
 // }
-
-#[derive(Debug, Copy, Clone)]
-struct RGB {
-    r: u8,
-    g: u8,
-    b: u8
-}
-
-impl std::fmt::Display for RGB {
-    fn fmt(&self, out: &mut std::fmt::Formatter) -> std::fmt::Result {
-        let red = self.r;
-        let green = self.g;
-        let blue = self.b;
-        write!(out, "{}", format!("\x1b[48;2;{red};{green};{blue}m"))
-    }
-}
-
-#[derive(Debug, Copy, Clone)]
-struct RGBA {
-    r: u8,
-    g: u8,
-    b: u8,
-    a: u8
-}
-
-impl std::fmt::Display for RGBA {
-    fn fmt(&self, out: &mut std::fmt::Formatter) -> std::fmt::Result {
-        let red = self.r;
-        let green = self.g;
-        let blue = self.b;
-        let alpha = self.a;
-        if red == 0 && green == 0 && blue == 0 && alpha == 0 {
-            write!(out, "{}","\x1b[0m".to_string())
-        }
-        else {
-            write!(out, "{}", format!("\x1b[48;2;{red};{green};{blue}m"))
-        }
-    }
-}
-
-struct GameColor {}
-
-impl GameColor {
-    const fn _none() -> RGBA {RGBA{r:0,g:0,b:0,a:0}}
-    const fn object() -> RGBA {RGBA{r:0,g:255,b:255,a:255}}
-    const fn background() -> RGB {RGB{r:50,g:50,b:50}}
-    const fn _red() -> RGB {RGB{r:255,g:0,b:0}}
-    const fn _start() -> &'static str {"\x1b[48;2;"}
-    const fn end() -> &'static str {"\x1b[0m"}
-}
 
 struct RenderQuery {
     query: Vec<RenderInstruction>
@@ -293,11 +100,14 @@ struct RenderInstruction {
     start: usize,
     end: usize,
     z: i32,
-    color: RGBA
+    color: Color
 }
 
 impl RenderInstruction {
     fn split_gap(&mut self, mut start: usize, mut end: usize) -> Option<RenderInstruction> {
+        // (0..10),(5..12)
+        // (0,12)
+        // (10-0)+(12-5)-12
         // extremely fast
         if start > end {return None};
         if start > self.end {return None};
@@ -333,8 +143,8 @@ impl std::fmt::Display for RenderInstruction {
 
 struct DisplayObject {
     size: Size,
-    xyz: XYZ,
-    color: RGBA,
+    pos: Pos,
+    color: Color,
     _children: Vec<DisplayObject>
 }
 
@@ -342,23 +152,23 @@ impl DisplayObject {
     fn _render(&self) -> String {
         let mut render = String::new();
         render += self.color.to_string().as_str();
-        for _ in 0..self.size.height {
-            render += &"  ".repeat(self.size.width);
+        for _ in 0..self.size.height() {
+            render += &"  ".repeat(self.size.width());
             render += "\n";
         }
         render.pop();
-        render += GameColor::end();
+        render += (Color::None).to_string().as_str();
         return render;
     }
     const fn create(
-        size: Option<Size>,
-        xyz: Option<XYZ>,
-        color: Option<RGBA>,
+        size: Size,
+        pos: Pos,
+        color: Color,
     ) -> DisplayObject {
         return DisplayObject {
-            size:match size {Some(s)=>s,None=>Size{width:0,height:0}},
-            xyz:match xyz {Some(v)=>v,None=>XYZ{x:0,y:0,z:0}},
-            color:match color {Some(c)=>c,None=>GameColor::object()},
+            size,
+            pos,
+            color,
             _children:vec![]
         }
     }
@@ -366,8 +176,7 @@ impl DisplayObject {
 
 struct DisplayFrame {
     size: Size,
-    color: RGB,
-    render_query: RenderQuery,
+    color: Color,
     body: Vec<DisplayObject>
 }
 
@@ -377,38 +186,38 @@ impl DisplayFrame {
         let mut r_query = RenderQuery{query:vec![
             RenderInstruction{
                 start: 0,
-                end: self.size.width * self.size.height,
+                end: self.size.area(),
                 z: -1,
-                color: RGBA{r:self.color.r,g:self.color.g,b:self.color.b,a:255}
+                color: self.color
             }
         ]};
         for object in &self.body {
             // if contained
-            let off_left = -min(object.xyz.x,0) as usize;
-            let off_right = -min((self.size.width as i32)-object.xyz.x-(object.size.width as i32),0) as usize;
-            let off_top = -min(object.xyz.y,0) as usize;
-            let off_bottom = -min((self.size.height as i32)-object.xyz.y-(object.size.height as i32),0) as usize;
+            let off_left = min(object.pos.x(),0) as usize;
+            let off_right = -min((self.size.width() as i32)-object.pos.x()-(object.size.width() as i32),0) as usize;
+            let off_top = min(object.pos.y(),0) as usize;
+            let off_bottom = -min((self.size.height() as i32)-object.pos.y()-(object.size.height() as i32),0) as usize;
             let off_screen_x = max(off_left,off_right);
             let off_screen_y = max(off_top,off_bottom);
-            let avail_width = if off_screen_x < object.size.width {
-                object.size.width - off_screen_x
+            let avail_width = if off_screen_x < object.size.width() {
+                object.size.width() - off_screen_x
             } else {
                 0
             };
-            let avail_height = if off_screen_y < object.size.height {
-                object.size.height - off_screen_y
+            let avail_height = if off_screen_y < object.size.height() {
+                object.size.height() - off_screen_y
             } else {
                 0
             };
-            let moved_x = object.xyz.x + (off_left as i32);
-            let moved_y = object.xyz.y + (off_top as i32);
-            let xyz = XYZ{x:moved_x,y:moved_y,z:object.xyz.z};
+            let moved_x = object.pos.x() + (off_left as i32);
+            let moved_y = object.pos.y() + (off_top as i32);
+            let xyz = Pos::XYZ(moved_x,moved_y,object.pos.z());
             if avail_width*avail_height == 0 {continue};
             for i in 0..avail_height {
-                let coords = xyz + XYZ{x:0,y:(i as i32),z:0};
+                let coords = xyz + Pos::Y(i as i32);
                 let start = coords.index(&self.size).unwrap();
                 let end = start + avail_width;
-                let z = xyz.z;
+                let z = xyz.z();
                 let color = object.color;
                 let instruct = RenderInstruction{start,end,z,color};
                 r_query.add(instruct);
@@ -416,9 +225,9 @@ impl DisplayFrame {
         }
         let mut render = String::new();
         render += self.color.to_string().as_str();
-        for i in 0..self.size.height {
-            for k in 0..self.size.width {
-                let index = i*self.size.width + k;
+        for i in 0..self.size.height() {
+            for k in 0..self.size.width() {
+                let index = i*self.size.width() + k;
                 match r_query.get_index(index) {
                     Some(instruct) => {
                         render += instruct.color.to_string().as_str();
@@ -432,19 +241,16 @@ impl DisplayFrame {
             render += "\n";
         }
         render.pop();
-        render += GameColor::end();
+        render += (Color::None).to_string().as_str();
         return render;
     }
     fn create(
-        size: Option<Size>,
-        color: Option<RGB>
+        size: Size,
+        color: Color
     ) -> DisplayFrame {
-        let size_ans = match size {Some(s)=>s,None=>Size{width:50,height:50}};
-        let color_ans = match color {Some(c)=>c,None=>GameColor::background()};
         return DisplayFrame {
-            size: size_ans,
-            color: color_ans,
-            render_query: RenderQuery { query: vec![] },
+            size,
+            color,
             body: vec![]
         }
     }
@@ -453,44 +259,60 @@ impl DisplayFrame {
     }
 }
 
+const RED: Color = Color::RGB(255,0,0);
+const BLUE: Color = Color::RGB(0,0,255);
+const GREEN: Color = Color::RGB(0, 255, 0);
+
+const BACKGROUND_COLOR: Color = Color::RGB(50,50,50);
+const OBJECT_COLOR: Color = Color::RGB(0,255,255);
+
 fn main() {
     let mut main_frame = DisplayFrame::create(
-        Some(Size{width:20,height:10}),
-        Some(GameColor::background())
+        Size::WH(20,10),
+        BACKGROUND_COLOR
     );
     let object = DisplayObject::create(
-        Some(Size{width:5,height:5}),
-        Some(XYZ{x:0,y:0,z:0}),
-        Some(GameColor::object())
+        Size::WH(5,5),
+        Pos::XYZ(0,0,0),
+        OBJECT_COLOR
     );
     main_frame.add(object);
+    let mut test = AnsiiString::new();
+    test.push(AnsiiChunk::Void("  ".repeat(10),RED));
+    test.push(AnsiiChunk::Void("  ".repeat(5),BLUE));
+    let mut test_1 = AnsiiString::new();
+    test_1.push(AnsiiChunk::Void("  ".repeat(2),GREEN));
+    test_1.push(AnsiiChunk::Void("  ".repeat(4),BLUE));
+    test.push_ansii_string(test_1);
+    println!("{test}");
+    /* 
     let time = std::time::Duration::from_millis(10);
     let mut max_time = 100*10;
     let device_state = DeviceState::new();
     while max_time > 0 {
         let keys: Vec<Keycode> = device_state.get_keys();
         if keys.contains(&Keycode::A) {
-            main_frame.body[0].xyz.x -= 1;
+            main_frame.body[0].pos += Pos::X(-1);
         }
         if keys.contains(&Keycode::S) {
-            main_frame.body[0].xyz.y += 1;
+            main_frame.body[0].pos += Pos::Y(1);
         }
         if keys.contains(&Keycode::W) {
-            main_frame.body[0].xyz.y -= 1;
+            main_frame.body[0].pos += Pos::Y(-1);
         }
         if keys.contains(&Keycode::D) {
-            main_frame.body[0].xyz.x += 1;
+            main_frame.body[0].pos += Pos::X(1);
         }
         render_frame(&main_frame);
         std::thread::sleep(time);
         max_time -= 1;
     }
+    */
 }
 
 fn render_frame(frame: &DisplayFrame) {
-    let render = RenderMachineCode(frame.render());
     print!("\x1B[2J\x1B[1;1H");
-    println!("{:?}",&render);
+    println!("{}",frame.render());
 }
 
 /*
