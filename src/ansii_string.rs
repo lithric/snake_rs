@@ -3,7 +3,7 @@ use std::alloc::{self, Layout};
 use std::fmt::Display;
 use std::marker::PhantomData;
 use std::mem;
-use std::ops::{Deref, DerefMut};
+use std::ops::{Deref, DerefMut, AddAssign};
 use std::ptr::{self, NonNull};
 
 struct RawAnsiiString {
@@ -202,6 +202,19 @@ impl Display for AnsiiString {
         write!(f,"{}",res)
     }
 }
+
+impl AddAssign for AnsiiString {
+    fn add_assign(&mut self, rhs: Self) {
+        self.push_ansii_string(rhs);
+    }
+}
+
+impl AddAssign<AnsiiChunk> for AnsiiString {
+    fn add_assign(&mut self, rhs: AnsiiChunk) {
+        self.push(rhs);
+    }
+}
+
 
 struct RawValIter {
     start: *const AnsiiChunk,

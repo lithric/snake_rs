@@ -1,3 +1,5 @@
+
+
 /*
     goal:
         make a console game with console pixels and stuff.
@@ -10,7 +12,7 @@
         This also makes it easier to implement custom interactions between 
         certaint types of values.
 */
-
+#![allow(dead_code,unused)]
 pub mod color;
 pub mod ansii_chunk;
 pub mod size;
@@ -23,21 +25,8 @@ use crate::ansii_string::AnsiiString;
 use crate::size::Size;
 use crate::pos::Pos;
 use device_query::{DeviceQuery, DeviceState, Keycode};
+use my_proc_macros_lib::create_object;
 use std::cmp::{min,max};
-
-/*
-    origin: XY
-    [**color**][**pixels**]
-*/
-
-
-
-
-// impl std::cmp::Ord<Size> for XYZ {
-//     fn cmp(&self, other: &Size) -> std::cmp::Ordering {
-//         (self.x, self.y).cmp((other.width as i32, other.height as i32))
-//     }
-// }
 
 struct RenderQuery {
     query: Vec<RenderInstruction>
@@ -182,6 +171,8 @@ struct DisplayFrame {
 
 impl DisplayFrame {
     fn render(&self) -> String {
+        return String::new();
+        /*
         // add the frame to render query
         let mut r_query = RenderQuery{query:vec![
             RenderInstruction{
@@ -243,6 +234,7 @@ impl DisplayFrame {
         render.pop();
         render += (Color::None).to_string().as_str();
         return render;
+        */
     }
     fn create(
         size: Size,
@@ -262,6 +254,7 @@ impl DisplayFrame {
 const RED: Color = Color::RGB(255,0,0);
 const BLUE: Color = Color::RGB(0,0,255);
 const GREEN: Color = Color::RGB(0, 255, 0);
+const CYAN: Color = Color::RGB(0,255,255);
 
 const BACKGROUND_COLOR: Color = Color::RGB(50,50,50);
 const OBJECT_COLOR: Color = Color::RGB(0,255,255);
@@ -276,14 +269,26 @@ fn main() {
         Pos::XYZ(0,0,0),
         OBJECT_COLOR
     );
+    /* 
+        create_object! {
+            * "  x  x  " GREEN "        "      *
+            * "  xxxx  " RED   "        "      *
+            * "xxxxxxxx" BLUE  " hello! " CYAN *
+            * "xxxxxxxx" BLUE  "        "      *
+            * "  x  x  " BLUE  "        "      *
+        }
+        let x = AnsiiString::new();
+        x.push(AnsiiChunk::Void)
+    */
     main_frame.add(object);
-    let mut test = AnsiiString::new();
-    test.push(AnsiiChunk::Void("  ".repeat(10),RED));
-    test.push(AnsiiChunk::Void("  ".repeat(5),BLUE));
-    let mut test_1 = AnsiiString::new();
-    test_1.push(AnsiiChunk::Void("  ".repeat(2),GREEN));
-    test_1.push(AnsiiChunk::Void("  ".repeat(4),BLUE));
-    test.push_ansii_string(test_1);
+    let test = create_object! {
+        * "  x  x  " GREEN "        "     *
+        * "  xxxx  " RED   "        "     *
+        * "xxxxxxxx" BLUE  "        "     *
+        * "xxxxxxxx" BLUE  " hello! " RED *
+        * "xxxxxxxx" BLUE  "        "     *
+        * "  x  x  " RED   "        "     *
+    };
     println!("{test}");
     /* 
     let time = std::time::Duration::from_millis(10);

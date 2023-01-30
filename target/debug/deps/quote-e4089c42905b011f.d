@@ -1,0 +1,11 @@
+c:\Users\Administrator\Documents\GitHub\snake_rs\target\debug\deps\quote-e4089c42905b011f.rmeta: C:\Users\Administrator\.cargo\registry\src\github.com-1ecc6299db9ec823\quote-1.0.23\src\lib.rs C:\Users\Administrator\.cargo\registry\src\github.com-1ecc6299db9ec823\quote-1.0.23\src\ext.rs C:\Users\Administrator\.cargo\registry\src\github.com-1ecc6299db9ec823\quote-1.0.23\src\format.rs C:\Users\Administrator\.cargo\registry\src\github.com-1ecc6299db9ec823\quote-1.0.23\src\ident_fragment.rs C:\Users\Administrator\.cargo\registry\src\github.com-1ecc6299db9ec823\quote-1.0.23\src\to_tokens.rs C:\Users\Administrator\.cargo\registry\src\github.com-1ecc6299db9ec823\quote-1.0.23\src\runtime.rs C:\Users\Administrator\.cargo\registry\src\github.com-1ecc6299db9ec823\quote-1.0.23\src\spanned.rs
+
+c:\Users\Administrator\Documents\GitHub\snake_rs\target\debug\deps\quote-e4089c42905b011f.d: C:\Users\Administrator\.cargo\registry\src\github.com-1ecc6299db9ec823\quote-1.0.23\src\lib.rs C:\Users\Administrator\.cargo\registry\src\github.com-1ecc6299db9ec823\quote-1.0.23\src\ext.rs C:\Users\Administrator\.cargo\registry\src\github.com-1ecc6299db9ec823\quote-1.0.23\src\format.rs C:\Users\Administrator\.cargo\registry\src\github.com-1ecc6299db9ec823\quote-1.0.23\src\ident_fragment.rs C:\Users\Administrator\.cargo\registry\src\github.com-1ecc6299db9ec823\quote-1.0.23\src\to_tokens.rs C:\Users\Administrator\.cargo\registry\src\github.com-1ecc6299db9ec823\quote-1.0.23\src\runtime.rs C:\Users\Administrator\.cargo\registry\src\github.com-1ecc6299db9ec823\quote-1.0.23\src\spanned.rs
+
+C:\Users\Administrator\.cargo\registry\src\github.com-1ecc6299db9ec823\quote-1.0.23\src\lib.rs:
+C:\Users\Administrator\.cargo\registry\src\github.com-1ecc6299db9ec823\quote-1.0.23\src\ext.rs:
+C:\Users\Administrator\.cargo\registry\src\github.com-1ecc6299db9ec823\quote-1.0.23\src\format.rs:
+C:\Users\Administrator\.cargo\registry\src\github.com-1ecc6299db9ec823\quote-1.0.23\src\ident_fragment.rs:
+C:\Users\Administrator\.cargo\registry\src\github.com-1ecc6299db9ec823\quote-1.0.23\src\to_tokens.rs:
+C:\Users\Administrator\.cargo\registry\src\github.com-1ecc6299db9ec823\quote-1.0.23\src\runtime.rs:
+C:\Users\Administrator\.cargo\registry\src\github.com-1ecc6299db9ec823\quote-1.0.23\src\spanned.rs:

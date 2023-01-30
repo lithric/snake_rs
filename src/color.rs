@@ -13,7 +13,7 @@ pub enum Color {
 
 #[allow(dead_code)]
 impl Color {
-    fn rgb(&self) -> Color {
+    pub fn rgb(&self) -> Color {
         match self {
             Color::RGB(r,g,b) |
             Color::RGB38(r,g,b) |
@@ -50,7 +50,7 @@ impl Color {
             }
         }
     }
-    fn rgb38(&self) -> Color {
+    pub fn rgb38(&self) -> Color {
         match self {
             Color::RGB(r,g,b) |
             Color::RGB38(r,g,b) |
@@ -77,7 +77,7 @@ impl Color {
             }
         }
     }
-    fn rgb48(&self) -> Color {
+    pub fn rgb48(&self) -> Color {
         match self {
             Color::RGB(r,g,b) |
             Color::RGB48(r,g,b) |
@@ -104,7 +104,7 @@ impl Color {
             }
         }
     }
-    fn rgbc(&self) -> Color {
+    pub fn rgbc(&self) -> Color {
         match self {
             Color::RGB(r,g,b) => {
                 Color::RGBC((*r,*g,*b),(*r,*g,*b))
@@ -127,7 +127,7 @@ impl Color {
             }
         }
     }
-    fn rgba(&self) -> Color {
+    pub fn rgba(&self) -> Color {
         match self {
             Color::RGB(r,g,b) |
             Color::RGB38(r,g,b) |
@@ -149,7 +149,7 @@ impl Color {
             }
         }
     }
-    fn rgba38(&self) -> Color {
+    pub fn rgba38(&self) -> Color {
         match self {
             Color::RGB(r,g,b) |
             Color::RGB38(r,g,b) |
@@ -166,7 +166,7 @@ impl Color {
             }
         }
     }
-    fn rgba48(&self) -> Color {
+    pub fn rgba48(&self) -> Color {
         match self {
             Color::RGB(r,g,b) |
             Color::RGB48(r,g,b) |
@@ -183,7 +183,7 @@ impl Color {
             }
         }
     }
-    fn rgbac(&self) -> Color {
+    pub fn rgbac(&self) -> Color {
         match self {
             Color::RGB(r,g,b) => {
                 Color::RGBAC((*r,*g,*b,255),(*r,*g,*b,255))
@@ -212,6 +212,19 @@ impl Color {
             _ => {
                 Color::None
             }
+        }
+    }
+    pub fn make_rgbc(c1:Color,c2:Color) -> Color {
+        if let Color::RGB48(r1,g1,b1) = c1 {
+            if let Color::RGB38(r2,g2,b2) = c2 {
+                Color::RGBC((r1,g1,b1),(r2,g2,b2))
+            }
+            else {
+                Color::None
+            }
+        }
+        else {
+            Color::None
         }
     }
 }
